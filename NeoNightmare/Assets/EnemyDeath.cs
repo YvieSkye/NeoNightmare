@@ -31,7 +31,7 @@ public class EnemyDeath : MonoBehaviour
 
     void PlayerDamage()
     {
-        Health =- 1;
+        Health -= 1;
 
         if (Health <= 0)
         {
