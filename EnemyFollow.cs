@@ -4,19 +4,39 @@ using UnityEngine;
 
 public class EnemyFollow : MonoBehaviour
 {
-    public Transform Player;
-    public float speed = 2f;
-    private float minDistance = 0.2f;
-    private float range;
+    private GameObject player;
+    private Rigidbody rb;
+    private Vector3 movement;
+    public float moveSpeed = 5f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = this.GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    // Update is called once per frame
     void Update()
     {
-        Player = GameObject.FindWithTag("Player").transform;
-        range = Vector2.Distance(transform.position, Player.position);
-        if (range > minDistance)
-        {
-            Debug.Log(range);
-            Player = GameObject.FindWithTag("Player").transform;
-            transform.position = Vector2.MoveTowards(transform.position, Player.position, speed * Time.deltaTime);
-        }
+        Vector3 direction = player.transform.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        //rb.rotation = angle; 
+        direction.Normalize();
+        movement = direction;
+        moveCharacter(movement); 
+
+    }
+
+    private void FixUpdate()
+    {
+        
+    }
+
+    void moveCharacter(Vector3 direction)
+    {
+        rb.MovePosition((Vector3)transform.position + (direction * moveSpeed * Time.deltaTime));
     }
 }
+
+
